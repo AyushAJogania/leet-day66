@@ -1,0 +1,31 @@
+#include <vector>
+#include <algorithm>
+
+class Solution {
+public:
+    std::vector<int> kWeakestRows(std::vector<std::vector<int>>& mat, int k) {
+        // Create a vector of pairs to store the number of soldiers and row index
+        std::vector<std::pair<int, int>> soldiersCount;
+
+        // Traverse through each row and count the number of soldiers
+        for (int i = 0; i < mat.size(); ++i) {
+            int count = std::accumulate(mat[i].begin(), mat[i].end(), 0);
+            soldiersCount.push_back({count, i});
+        }
+
+        // Sort the vector of pairs based on the number of soldiers and row index
+        std::sort(soldiersCount.begin(), soldiersCount.end(), [](const auto& a, const auto& b) {
+            return (a.first == b.first) ? (a.second < b.second) : (a.first < b.first);
+        });
+
+        // Create a result vector to store the row indexes of the weakest rows
+        std::vector<int> result;
+
+        // Iterate through the sorted vector and add row indexes to the result
+        for (int i = 0; i < k; ++i) {
+            result.push_back(soldiersCount[i].second);
+        }
+
+        return result;
+    }
+};
